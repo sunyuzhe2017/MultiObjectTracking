@@ -33,8 +33,8 @@ void MultiTrackerJPDA::step(const MatrixXd &z, bool debug) {
     for(auto it = set_gated_index.begin(); it != set_gated_index.end(); ++it, ++idx) {
         post_index(idx) = *it;
     }
-    MatrixXi post_gated_index = gated_index(Eigen::all, post_index);
-    MatrixXd post_z = z(Eigen::all, post_index);
+    MatrixXi post_gated_index = gated_index(Eigen::placeholders::all, post_index);
+    MatrixXd post_z = z(Eigen::placeholders::all, post_index);
 
     //// 2. Create 'Cost Matrix' (L)
     m = post_gated_index.cols();
@@ -48,7 +48,7 @@ void MultiTrackerJPDA::step(const MatrixXd &z, bool debug) {
 
                 double fn_1 = log( sensor->get_P_D() / sensor->get_intensity() );
                 double fn_2 = -0.5 * log( (2 * M_PI * S).determinant() );
-                MatrixXd fm_1 = -0.5 * (post_z(Eigen::all, j) - zbar).transpose() * S.inverse() * (post_z(Eigen::all, j) - zbar);
+                MatrixXd fm_1 = -0.5 * (post_z(Eigen::placeholders::all, j) - zbar).transpose() * S.inverse() * (post_z(Eigen::placeholders::all, j) - zbar);
                 double fn3 = fm_1(0, 0);
 
                 L(i, j) = -( fn_1 + fn_2 + fn3  );
@@ -124,7 +124,7 @@ void MultiTrackerJPDA::step(const MatrixXd &z, bool debug) {
         VectorXd ksi_i = VectorXd::Zero(z.rows(), 1);
         MatrixXd aux = MatrixXd::Zero(z.rows(), z.rows());
         for(int j = 0; j < m; j++) {
-            VectorXd KS = post_z(Eigen::all, j) - ( *estimator->h( states->at(i)->getX() ) );
+            VectorXd KS = post_z(Eigen::placeholders::all, j) - ( *estimator->h( states->at(i)->getX() ) );
             ksi_ij.push_back(KS);
             ksi_i = ksi_i + beta(i,j) * KS;
             aux = aux + beta(i,j) * KS * KS.transpose();
@@ -152,12 +152,3 @@ VectorXd MultiTrackerJPDA::getX(int idx) {
 
     return states->at(idx)->getX();
 }
-
-
-
-
-
-
-
-
-

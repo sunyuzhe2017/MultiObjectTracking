@@ -191,11 +191,3 @@ void QTestUtils::testCovar2() {
 
     QVERIFY2( res.isApprox(refCovar, 1e-4), "" );
 }
-
-
-
-
-
-
-
-

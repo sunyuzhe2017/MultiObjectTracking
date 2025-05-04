@@ -128,7 +128,7 @@ shared_ptr<MatrixXd> InputParser::getOneMatrixX(const string& data, int start_in
         }
 
         VectorXd x = *this->getOneVectorX(curr, 0, curr.length());
-        result(i, Eigen::all) = x;
+        result(i, Eigen::placeholders::all) = x;
     }
 
     return make_shared<MatrixXd>( result );
@@ -153,7 +153,7 @@ shared_ptr<MatrixXi> InputParser::getOneMatrixXi(const string& data, int start_i
         }
 
         VectorXi x = *this->getOneVectorXi(curr, 0, curr.length());
-        result(i, Eigen::all) = x;
+        result(i, Eigen::placeholders::all) = x;
     }
 
     return make_shared<MatrixXi>( result );
@@ -257,13 +257,3 @@ shared_ptr<State> InputParser::getState(const string &strX, const string &strP) 
 
     return make_shared<State>( make_shared<VectorXd>(x), make_shared<MatrixXd>(P) );
 }
-
-
-
-
-
-
-
-
-
-

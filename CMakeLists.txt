@@ -10,7 +10,7 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_VERBOSE_MAKEFILE ON)
+# set(CMAKE_VERBOSE_MAKEFILE ON)
 
 if(MINGW OR CYGWIN)
   add_definitions(-O1)
@@ -29,6 +29,13 @@ set(SET_RUN_APP    "3")
 ##### Here you can define the Running Mode of the Application #####
 # set( SET_RUN_TYPE ${SET_RUN_TEST} )
 
+##### Here you can specify your Eigen and Qt5 path
+# set(Eigen3_DIR "/usr/local/include/eigen3")
+# set(Qt5_DIR "/home/sun/Downloads/qt-5.15")
+# set(Qt5Test_DIR "${Qt5_DIR}/lib/cmake/Qt5Test")
+# set(Qt5Core_DIR "${Qt5_DIR}/lib/cmake/Qt5Core")
+# set(Qt5Quick_DIR "${Qt5_DIR}/lib/cmake/Qt5Quick")
+# set(Qt5Network_DIR "${Qt5_DIR}/lib/cmake/Qt5Network")
 
 find_package(Qt5Test REQUIRED)
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
@@ -93,7 +100,7 @@ if( ${SET_RUN_TYPE} MATCHES ${SET_RUN_TEST} )
 
     MESSAGE( STATUS "-->> Add Executable for Test" )
     add_definitions(-DRUN_TYPE=RUN_TEST)
-    find_package(GTest CONFIG REQUIRED)
+    # find_package(GTest CONFIG REQUIRED)
 
     set(SOURCES ${SOURCES}
             tests/qtest_transition_constant_velocity.cpp
@@ -117,7 +124,7 @@ if( ${SET_RUN_TYPE} MATCHES ${SET_RUN_TEST} )
     add_executable(TestMultiObjectTracking
         ${SOURCES} )
 
-    target_link_libraries(TestMultiObjectTracking Qt5::Core Qt5::Network Eigen3::Eigen Qt5::Test GTest::gtest GTest::gmock)
+    target_link_libraries(TestMultiObjectTracking Qt5::Core Qt5::Network Eigen3::Eigen Qt5::Test)
 
 elseif( ${SET_RUN_TYPE} MATCHES ${SET_RUN_DEBUG} )
 
@@ -136,7 +143,7 @@ elseif( ${SET_RUN_TYPE} MATCHES ${SET_RUN_DEBUG} )
     add_executable(DebugMultiObjectTracking
         ${SOURCES} )
 
-    target_link_libraries(DebugMultiObjectTracking Qt5::Core Qt5::Quick Qt5::Network Eigen3::Eigen)
+    target_link_libraries(DebugMultiObjectTracking Qt5::Core Qt5::Quick Qt5::Network Eigen3::Eigen Qt5::Test)
 
 elseif( ${SET_RUN_TYPE} MATCHES ${SET_RUN_APP} )
 
@@ -151,18 +158,8 @@ elseif( ${SET_RUN_TYPE} MATCHES ${SET_RUN_APP} )
 
     add_executable(MultiObjectTracking
         ${SOURCES} )
-    target_link_libraries(MultiObjectTracking Qt5::Core Qt5::Quick Qt5::Network Eigen3::Eigen)
+    target_link_libraries(MultiObjectTracking Qt5::Core Qt5::Quick Qt5::Network Eigen3::Eigen Qt5::Test)
 
 endif()
 
 # MESSAGE( STATUS "-->> Source Files for Compilation: " ${SOURCES} )
-
-
-
-
-
-
-
-
-
-

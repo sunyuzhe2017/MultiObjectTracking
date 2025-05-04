@@ -47,7 +47,7 @@ void TrackerGaussianSum::step(const MatrixXd &z) {
 
         VecState hypotheses_mk;
         for(auto i = 0; i < mk; i++) {
-            hypotheses_mk.push_back( this->estimator->update(*state, gated_z(Eigen::all, i) ) );
+            hypotheses_mk.push_back( this->estimator->update(*state, gated_z(Eigen::placeholders::all, i) ) );
         }
         hypotheses_mk.push_back(hypothesis_0);
 
@@ -98,17 +98,3 @@ void TrackerGaussianSum::step(const MatrixXd &z) {
     // for(auto i = 0U; i < hypotheses_update.size(); i++)
         // Utils::print(hypotheses_update[i]->getX(), "predicted x");
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

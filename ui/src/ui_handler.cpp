@@ -186,13 +186,3 @@ void UIHandler::multiMeasurements(QList<int> xs, QList<int> ys) {
     //qDebug() << "multiMeasurements Finished";
     emit this->multiTrackingAddItem("repaint", x, y);
 }
-
-
-
-
-
-
-
-
-
-

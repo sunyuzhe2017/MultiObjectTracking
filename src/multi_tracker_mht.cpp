@@ -90,11 +90,11 @@ void MultiTrackerMHT::generate_H_w_i(NestedPtrVecState& curr_H_i, vector<VectorX
 
                 double fn_1 = log( sensor->get_P_D() / sensor->get_intensity() );
                 double fn_2 = -0.5 * log( (2 * M_PI * S).determinant() );
-                MatrixXd fm_1 = -0.5 * (z(Eigen::all, j) - zbar).transpose() * S.inverse() * (z(Eigen::all, j) - zbar);
+                MatrixXd fm_1 = -0.5 * (z(Eigen::placeholders::all, j) - zbar).transpose() * S.inverse() * (z(Eigen::placeholders::all, j) - zbar);
                 double fn_3 = fm_1(0, 0);
 
                 curr_log_w_i[i](newidx, 0) = fn_1 + fn_2 + fn_3;
-                inner_H_i->at(newidx) = estimator->update(*this->H_i->at(i)->at(lh), new_z(Eigen::all, L_idx));
+                inner_H_i->at(newidx) = estimator->update(*this->H_i->at(i)->at(lh), new_z(Eigen::placeholders::all, L_idx));
             }
             // int newidx = (lh+1)*(m+1)-1;
             int newidx = (lh+1)*(m+1)-1;
@@ -223,7 +223,7 @@ void MultiTrackerMHT::step(const MatrixXd &z, bool debug) {
 
     m = set_gated_index.size();
     // Utils::printf("m: %d", m);
-    MatrixXd new_z = z(Eigen::all, *Utils::setToArrayXi(set_gated_index));
+    MatrixXd new_z = z(Eigen::placeholders::all, *Utils::setToArrayXi(set_gated_index));
     // Utils::printEigen<MatrixXd>(new_z, "new_z");
 
     NestedPtrVecState curr_H_i = make_shared<vector<PtrVecState>>(n);
@@ -259,7 +259,7 @@ void MultiTrackerMHT::step(const MatrixXd &z, bool debug) {
 
     for(int i = 0; i < n; i++) {
 
-        VectorXi curr_col_items = (*curr_H)(Eigen::all, i);
+        VectorXi curr_col_items = (*curr_H)(Eigen::placeholders::all, i);
         set<int> set_curr_col_items(curr_col_items.data(), curr_col_items.data() + curr_col_items.rows());
         vector<int> vec_curr_col_items(set_curr_col_items.begin(), set_curr_col_items.end());
         // Utils::print<int>(set_curr_Col, "set_curr_Col");
@@ -271,8 +271,8 @@ void MultiTrackerMHT::step(const MatrixXd &z, bool debug) {
 
         // Utils::printf("vec_curr_col_items count: %d", vec_curr_col_items.size());
         for(uint ri = 0; ri < vec_curr_col_items.size(); ri++) {
-            VectorXi temporary_H = ( (*curr_H)(Eigen::all, i).array() == vec_curr_col_items[ri] ).select(ri, (*curr_H)(Eigen::all, i));
-            (*curr_H)(Eigen::all, i) = temporary_H.transpose();
+            VectorXi temporary_H = ( (*curr_H)(Eigen::placeholders::all, i).array() == vec_curr_col_items[ri] ).select(ri, (*curr_H)(Eigen::placeholders::all, i));
+            (*curr_H)(Eigen::placeholders::all, i) = temporary_H.transpose();
         }
     }
 
@@ -296,15 +296,3 @@ VectorXd MultiTrackerMHT::getX(int idx) {
 
     return H_i->at(idx)->at(best_index)->getX();
 }
-
-
-
-
-
-
-
-
-
-
-
-

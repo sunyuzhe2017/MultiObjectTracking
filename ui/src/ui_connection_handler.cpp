@@ -22,4 +22,3 @@ void UIConnectionHandler::receiveFromQml(QString value) {
 
     qDebug() << "Received: " << value;
 }
-

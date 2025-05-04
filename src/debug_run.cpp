@@ -104,7 +104,7 @@ void DebugRun::initMultiTrackers() {
         Utils::getDataFromFile(QString("debug_data/MOT/%1/init_states_%2.txt").arg(data_path, QString::number(i)), state_values);
 
         shared_ptr<VectorXd> x = Utils::getVectorXdData(state_values, "var_x", 5);
-        double velocity = Utils::getVelocity(x1(Eigen::all, i-1), x2(Eigen::all, i-1));
+        double velocity = Utils::getVelocity(x1(Eigen::placeholders::all, i-1), x2(Eigen::placeholders::all, i-1));
         (*x)(2, 0) = velocity;
         (*x)(4, 0) = 0;
         shared_ptr<MatrixXd> P = Utils::getSquareMatrixXdData(state_values, "var_P", 5);
@@ -121,7 +121,7 @@ void DebugRun::initMultiTrackers() {
         Utils::getDataFromFile(QString("debug_data/MOT/%1/init_states_%2.txt").arg(data_path, QString::number(i)), state_values);
 
         shared_ptr<VectorXd> x = Utils::getVectorXdData(state_values, "var_x", 5);
-        double velocity = Utils::getVelocity(x1(Eigen::all, i-1), x2(Eigen::all, i-1));
+        double velocity = Utils::getVelocity(x1(Eigen::placeholders::all, i-1), x2(Eigen::placeholders::all, i-1));
         (*x)(2, 0) = velocity;
         (*x)(4, 0) = 0;
         shared_ptr<MatrixXd> P = Utils::getSquareMatrixXdData(state_values, "var_P", 5);
@@ -137,7 +137,7 @@ void DebugRun::initMultiTrackers() {
         Utils::getDataFromFile(QString("debug_data/MOT/%1/init_states_%2.txt").arg(data_path, QString::number(i)), state_values);
 
         shared_ptr<VectorXd> x = Utils::getVectorXdData(state_values, "var_x", 5);
-        double velocity = Utils::getVelocity(x1(Eigen::all, i-1), x2(Eigen::all, i-1));
+        double velocity = Utils::getVelocity(x1(Eigen::placeholders::all, i-1), x2(Eigen::placeholders::all, i-1));
         (*x)(2, 0) = velocity;
         (*x)(4, 0) = 0;
         shared_ptr<MatrixXd> P = Utils::getSquareMatrixXdData(state_values, "var_P", 5);
@@ -824,7 +824,7 @@ void DebugRun::handleMHT() {
     int K = init_values["K"].toInt();
     int M = init_values["M"].toInt();
     float P_D = init_values["P_D"].toFloat();
-    /float P_G = init_values["P_G"].toFloat();
+    float P_G = init_values["P_G"].toFloat();
     int T = init_values["T"].toInt();
     int lambda_c = init_values["lambda_c"].toFloat();
     //int mergeing_threshold = init_values["merging_threshold"].toInt();
@@ -902,7 +902,7 @@ void DebugRun::handleIndices() {
 
             vector<ArrayXi> inner_gated_index;
             for(int lh = 0; lh < n_i; lh++) {
-                int arr_len = (pre_idx_z(Eigen::all, j).array() > 0).colwise().count()[0];
+                int arr_len = (pre_idx_z(Eigen::placeholders::all, j).array() > 0).colwise().count()[0];
                 ArrayXi curr_gated_index(arr_len);
 
                 int l = 0;
@@ -1031,7 +1031,7 @@ void DebugRun::handleMultiVelocity() {
         Utils::getDataFromFile(QString("debug_data/MOT/%1/init_states_%2.txt").arg(path, QString::number(i)), state_values);
 
         VectorXd x = *Utils::getVectorXdData(state_values, "var_x", 5);
-        double velocity = Utils::getVelocity(x1(Eigen::all, i-1), x2(Eigen::all, i-1));
+        double velocity = Utils::getVelocity(x1(Eigen::placeholders::all, i-1), x2(Eigen::placeholders::all, i-1));
 
         x(2, 0) = velocity;
         x(4, 0) = 0;
@@ -1039,26 +1039,3 @@ void DebugRun::handleMultiVelocity() {
         std::cout << "Velocity: " << velocity << std::endl;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

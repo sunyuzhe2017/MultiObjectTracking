@@ -183,7 +183,7 @@ tuple<shared_ptr<VectorXd>, double> Hypothesis::normalizeLogWeights(const Vector
         std::sort(vec_log_w.begin(), vec_log_w.end(), std::greater<>());
 
         VectorXd v_t1 = Eigen::Map<VectorXd, Eigen::Unaligned>(vec_log_w.data(), vec_log_w.size());
-        VectorXd v_t2 = v_t1(Eigen::seq(1, Eigen::last)) - Vector<double, 1>( v_t1.maxCoeff() ).replicate(v_t1.rows()-1, 1);
+        VectorXd v_t2 = v_t1(Eigen::seq(1, Eigen::placeholders::last)) - Vector<double, 1>( v_t1.maxCoeff() ).replicate(v_t1.rows()-1, 1);
         sum_log_w = v_t1.maxCoeff() + log( 1 + v_t2.array().exp().sum() );
         result_log_w = log_w - Vector<double, 1>(sum_log_w).replicate(log_w.rows(), 1);
     }
@@ -235,27 +235,8 @@ shared_ptr<vector<T>> Hypothesis::getWithIndices(const vector<T> &vec, const vec
 shared_ptr<MatrixXi> Hypothesis::getWithIndices(const shared_ptr<MatrixXi> &mat, vector<int> &indices) {
 
     ArrayXi arr_indices = Eigen::Map<Eigen::ArrayXi, Eigen::Unaligned>(indices.data(), indices.size());
-    return make_shared<MatrixXi>( (*mat)(arr_indices, Eigen::all) );
+    return make_shared<MatrixXi>( (*mat)(arr_indices, Eigen::placeholders::all) );
 }
 
 template shared_ptr<vector<double>> Hypothesis::getWithIndices(const vector<double> &vec, const vector<int> &indices);
 template shared_ptr<vector<Assignment>> Hypothesis::getWithIndices(const vector<Assignment> &vec, const vector<int> &indices);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

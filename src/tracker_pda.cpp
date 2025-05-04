@@ -29,7 +29,7 @@ void TrackerPDA::step(const MatrixXd &z) {
 
     VecState states;
     for(auto i = 0U; i < z_gate->cols(); i++) {
-        states.push_back( this->estimator->update(*this->state, (*z_gate)(Eigen::all, i)) );
+        states.push_back( this->estimator->update(*this->state, (*z_gate)(Eigen::placeholders::all, i)) );
     }
     states.push_back( this->state );
 
@@ -53,15 +53,3 @@ void TrackerPDA::step(const MatrixXd &z) {
      this->state = this->estimator->predict(*this->state);
      // Utils::printEigen<VectorXd>(this->state->getX(), "this state");
 }
-
-
-
-
-
-
-
-
-
-
-
-

@@ -302,13 +302,3 @@ void TestKalmanFilter::testUpdate1() {
 //    QVERIFY2( posteriorState->getX().isApprox(refx, 1e-4), "");
 //    QVERIFY2( posteriorState->getP().isApprox(refP), "");
 }
-
-
-
-
-
-
-
-
-
-

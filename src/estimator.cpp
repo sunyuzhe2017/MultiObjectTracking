@@ -35,7 +35,7 @@ tuple<shared_ptr<ArrayXi>, shared_ptr<MatrixXd>> Estimator::ellipsoidalGating(
     // dm = d.T @ inv(S) @ d
     VectorXd dm(z.cols());
     for(auto i = 0U; i < z.cols(); i++) {
-        dm(i) = d(Eigen::all, i).transpose() * S.inverse() * d(Eigen::all, i);
+        dm(i) = d(Eigen::placeholders::all, i).transpose() * S.inverse() * d(Eigen::placeholders::all, i);
     }
 
     MatrixXd z_gate = (dm.array() < gating_size).cast<double>().matrix();
@@ -51,7 +51,7 @@ tuple<shared_ptr<ArrayXi>, shared_ptr<MatrixXd>> Estimator::ellipsoidalGating(
     }
 
     shared_ptr<ArrayXi>  result_idx = make_shared<ArrayXi>( idx_in_gate );
-    shared_ptr<MatrixXd> result_z = make_shared<MatrixXd>( z(Eigen::all, idx_in_gate) );
+    shared_ptr<MatrixXd> result_z = make_shared<MatrixXd>( z(Eigen::placeholders::all, idx_in_gate) );
 
     tuple<shared_ptr<ArrayXi>, shared_ptr<MatrixXd>> result(result_idx, result_z);
 
@@ -76,7 +76,7 @@ shared_ptr<VectorXd> Estimator::predictedLikelihood( const State &state,
     VectorXd likelihood(z.cols());
 
     for(auto i = 0U; i < z.cols(); i++) {
-        likelihood(i, 0) = stats::dmvnorm<VectorXd, MatrixXd>(z(Eigen::all, i), zk, S, true);
+        likelihood(i, 0) = stats::dmvnorm<VectorXd, MatrixXd>(z(Eigen::placeholders::all, i), zk, S, true);
     }
 
     return make_shared<VectorXd>( likelihood );
@@ -179,13 +179,3 @@ MatrixXd Estimator::getR() {
 
     return  this->measurementModel->getR();
 }
-
-
-
-
-
-
-
-
-
-

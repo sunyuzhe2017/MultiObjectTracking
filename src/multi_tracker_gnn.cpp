@@ -31,8 +31,8 @@ void MultiTrackerGNN::step(const MatrixXd &z, bool debug) {
     for(auto it = set_gated_index.begin(); it != set_gated_index.end(); ++it, ++idx) {
         post_index(idx) = *it;
     }
-    MatrixXi post_gated_index = gated_index(Eigen::all, post_index);
-    MatrixXd post_z = z(Eigen::all, post_index);
+    MatrixXi post_gated_index = gated_index(Eigen::placeholders::all, post_index);
+    MatrixXd post_z = z(Eigen::placeholders::all, post_index);
 
     m = post_gated_index.cols();
 
@@ -46,7 +46,7 @@ void MultiTrackerGNN::step(const MatrixXd &z, bool debug) {
 
                 double fn_1 = log( sensor->get_P_D() / sensor->get_intensity() );
                 double fn_2 = -0.5 * log( (2 * M_PI * S_i_h).determinant() );
-                MatrixXd fm_1 = -0.5 * (post_z(Eigen::all, j) - zbar_i_h).transpose() * S_i_h.inverse() * (post_z(Eigen::all, j) - zbar_i_h);
+                MatrixXd fm_1 = -0.5 * (post_z(Eigen::placeholders::all, j) - zbar_i_h).transpose() * S_i_h.inverse() * (post_z(Eigen::placeholders::all, j) - zbar_i_h);
                 double fn_3 = fm_1(0, 0);
 
                 L(i, j) = -( fn_1 + fn_2 + fn_3  );
@@ -65,19 +65,19 @@ void MultiTrackerGNN::step(const MatrixXd &z, bool debug) {
     // Update
     for(uint i = 0; i < assignment.size(); i++) {
         if(assignment[i] < m) {
-            states->at(i) = this->estimator->update(*states->at(i), post_z(Eigen::all, assignment[i]));
+            states->at(i) = this->estimator->update(*states->at(i), post_z(Eigen::placeholders::all, assignment[i]));
         }
     }
 
     if(print_result == true) {
         MatrixXd res(states->at(0)->getX().rows(), states->size());
         for(uint i = 0; i < states->size(); i++) {
-         res(Eigen::all, i) = states->at(i)->getX();
+         res(Eigen::placeholders::all, i) = states->at(i)->getX();
         }
         std::cout << res.norm() << std::endl;
         //Utils::printEigen<MatrixXd>(res, "states");
         //Utils::printEigen<VectorXd>(states->at(0)->getX(), "x");
-        //Utils::printEigen<VectorXd>(z(Eigen::all,assignment[0]), "z");
+        //Utils::printEigen<VectorXd>(z(Eigen::placeholders::all,assignment[0]), "z");
         // Utils::printEigen<MatrixXd>(states->at(0)->getP(), "P");
     }
 
@@ -91,12 +91,3 @@ VectorXd MultiTrackerGNN::getX(int idx) {
 
     return states->at(idx)->getX();
 }
-
-
-
-
-
-
-
-
-

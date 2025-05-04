@@ -40,7 +40,7 @@ void TrackerNN::step(const MatrixXd &z) {
             upd_state = pred_state;
         } else {
 
-            MatrixXd z_NN = (*z_gate)(Eigen::all, max_index);
+            MatrixXd z_NN = (*z_gate)(Eigen::placeholders::all, max_index);
             // Utils::printEigen<MatrixXd>(z_NN, "z_NN");
             upd_state = this->estimator->update(*this->state, z_NN);
         }
@@ -54,10 +54,3 @@ void TrackerNN::step(const MatrixXd &z) {
     // Utils::printEigen<VectorXd>(pred_state->getX(), "predict state");
     // std::cout << std::endl;
 }
-
-
-
-
-
-
-

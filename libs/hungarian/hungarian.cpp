@@ -10,7 +10,7 @@ tuple<vector<int>, double> Hungarian::Solve(const MatrixXd &L) {
     vector<vector<double>> DistMatrix;
 
     for(int i = 0; i < L.rows(); i++) {
-        VectorXd currVector = L(i, Eigen::all);
+        VectorXd currVector = L(i, Eigen::placeholders::all);
         vector<double> currRow(currVector.data(), currVector.data() + currVector.size());
         DistMatrix.push_back(currRow);
     }
@@ -404,12 +404,3 @@ void Hungarian::step5(int *assignment, double *distMatrix, bool *starMatrix, boo
     /* move to step 3 */
     step3(assignment, distMatrix, starMatrix, newStarMatrix, primeMatrix, coveredColumns, coveredRows, nOfRows, nOfColumns, minDim);
 }
-
-
-
-
-
-
-
-
-
